@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@tailwindcss/forms": "^0.5.7",
         "next": "^12.3.4",
         "react": "18.0.0-rc.2",
         "react-dom": "18.0.0-rc.2"
