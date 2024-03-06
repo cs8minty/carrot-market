@@ -7,24 +7,68 @@ async function handler(
     req: NextApiRequest,
     res: NextApiResponse<ResponseType>
 ) {
-    const {
-        body: { question },
-        session: { user },
-    } = req;
-    const post = await client.post.create({
-        data: {
-            question,
-            user: {
-                connect: {
-                    id: user?.id,
+    if (req.method === 'POST') {
+        const {
+            body: { question, latitude, longitude },
+            session: { user },
+        } = req;
+        const post = await client.post.create({
+            data: {
+                question,
+                latitude,
+                longitude,
+                user: {
+                    connect: {
+                        id: user?.id,
+                    },
                 },
             },
-        },
-    });
-    res.json({
-        ok: true,
-        post,
-    });
+        });
+        res.json({
+            ok: true,
+            post,
+        });
+    }
+    if (req.method === 'GET') {
+        const {
+            query: { latitude, longitude },
+        } = req;
+        const parsedLatitude = Number(latitude);
+        const parsedLognitude = Number(longitude);
+        const posts = await client.post.findMany({
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        avatar: true,
+                    },
+                },
+                _count: {
+                    select: {
+                        answers: true,
+                        wondering: true,
+                    },
+                },
+            },
+            where: {
+                latitude: {
+                    gte: parsedLatitude - 0.01,
+                    lte: parsedLatitude + 0.01,
+                },
+                longitude: {
+                    gte: parsedLognitude - 0.01,
+                    lte: parsedLognitude + 0.01,
+                },
+            },
+        });
+        res.json({
+            ok: true,
+            posts,
+        });
+    }
 }
 
-export default withApiSession(withHandler({ methods: ['POST'], handler }));
+export default withApiSession(
+    withHandler({ methods: ['GET', 'POST'], handler })
+);
