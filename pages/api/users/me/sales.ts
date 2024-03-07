@@ -13,7 +13,15 @@ async function handler(
     const sales = await client.sale.findMany({
         where: { userId: user?.id },
         include: {
-            product: true,
+            product: {
+                include: {
+                    _count: {
+                        select: {
+                            favs: true,
+                        },
+                    },
+                },
+            },
         },
     });
     res.json({
