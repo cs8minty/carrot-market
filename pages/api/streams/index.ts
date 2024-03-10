@@ -17,6 +17,9 @@ async function handler(
                 name,
                 price: price,
                 description,
+                cloudflareId: '',
+                cloudflareKey: '',
+                cloudflareUrl: '',
                 user: {
                     connect: {
                         id: user?.id,

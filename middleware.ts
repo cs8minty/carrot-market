@@ -12,14 +12,13 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
     //         return NextResponse.redirect(req.nextUrl);
     //     }
     // }
-
     // if (req.nextUrl.pathname.startsWith('/chats')) {
     //     console.log('chats ONLY middleware');
     // }
-    if (!req.url.includes('/api')) {
-        if (!req.url.includes('/enter') && !req.cookies.get('carrotsession')) {
-            return NextResponse.redirect(`${req.nextUrl.origin}/enter`);
-        }
-    }
-    console.log(req.geo?.region);
+    // if (!req.url.includes('/api')) {
+    //     if (!req.url.includes('/enter') && !req.cookies.get('carrotsession')) {
+    //         return NextResponse.redirect(`${req.nextUrl.origin}/enter`);
+    //     }
+    // }
+    // console.log(req.geo?.region);
 }
