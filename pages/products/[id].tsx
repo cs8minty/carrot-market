@@ -8,6 +8,7 @@ import Link from 'next/link';
 import useMutation from '@libs/client/useMutation';
 import { cls } from '@libs/client/utils';
 import useUser from '@libs/client/useUser';
+import Image from 'next/image';
 
 interface ProductWithUser extends Product {
     user: User;
@@ -43,18 +44,25 @@ const ItemDetail: NextPage = () => {
                 <div className="mb-8">
                     {/* data.product.image !== 'xx' 이 부분은 추후 빼야될것 같음 */}
                     {data?.product.image && data.product.image !== 'xx' ? (
-                        <img
-                            src={`https://imagedelivery.net/t8wVfNM6toWL9ASZC4DDvQ/${data?.product.image}/public`}
-                            className="h-96 bg-slate-300"
-                        />
+                        <div className="relative aspect-video">
+                            <Image
+                                src={`https://imagedelivery.net/t8wVfNM6toWL9ASZC4DDvQ/${data?.product.image}/public`}
+                                className="h-96 bg-slate-300 object-cover"
+                                layout="fill"
+                                alt={data.product.name}
+                            />
+                        </div>
                     ) : (
                         <div className="h-96 bg-slate-300" />
                     )}
                     <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
                         {data?.product.user.avatar ? (
-                            <img
+                            <Image
+                                width={48}
+                                height={48}
                                 src={`https://imagedelivery.net/t8wVfNM6toWL9ASZC4DDvQ/${data?.product.user.avatar}/avatar`}
                                 className="w-12 h-12 rounded-full bg-slate-300"
+                                alt="avatar"
                             />
                         ) : (
                             <div className="w-12 h-12 rounded-full bg-slate-300" />
